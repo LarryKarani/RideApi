@@ -1,5 +1,5 @@
 import os
-from FlaskApp.app import create_app
+from FlaskApp.api.app import create_app
 
 environment = os.environ.get('config')
 app = create_app(environment)
