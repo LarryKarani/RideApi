@@ -17,7 +17,7 @@ class RideOffer():
 
     def create_ride(self, name, From, To, car_model, cost, seats_available, time):
         self.id = 1
-        #self.user = User.return_user(name)
+        
         """self.user_info = {
                         'name': self.user['username'],
                         'username': self.user['username'],
@@ -45,8 +45,6 @@ class RideOffer():
 
         return self.ride_offer_dict
 
-    
-    
     @staticmethod
     def get_all_rides():
         return RideOffer.ride_offers
@@ -58,6 +56,3 @@ class RideOffer():
                 return ride_offer
             else:
                 return{"message": " rideoffer does not exit"}
-    
-
-
