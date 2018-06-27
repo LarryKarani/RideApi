@@ -2,17 +2,22 @@ from datetime import datetime
 class User:
     #class variable holds all users
     users = []
+    def __init__(self, name, username, email, password):
+        self.name= name
+        self.username = username
+        self.email = email
+        self.password = password
 
-    def regester_user(self, name, username, email, password):
+    def regester_user(self):
         #adds user into the user list and returs the user
         self.date_registered = str(datetime.now())
 
 
         self.user_dict ={
-                   'username': username,
-                   'name': name,
-                   'email': email,
-                   'password':password,
+                   'username': self.username,
+                   'name': self.name,
+                   'email':self.email,
+                   'password':self.password,
                    'date_registered': self.date_registered,
                         }
 

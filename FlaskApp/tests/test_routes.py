@@ -10,11 +10,9 @@ from .dummy import ( dummy_ride_offer_request,  dummy_ride_offer, dummy_incomple
 
 app = create_app('testing')
 
-validator = Validator()
 
 class RegisterTestCase(unittest.TestCase):
     def setUp(self):
-       self.ride_offer_instance = RideOffer()
        self.dummy_client = app.test_client()
        self.ride_offer = dummy_ride_offer
        self.request_j = dummy_ride_offer_request
@@ -93,7 +91,7 @@ class RegisterTestCase(unittest.TestCase):
         self.token  = json.loads(self.response.data)['acces_token']
         self.response = self.dummy_client.post('/api/v1/rides', data=json.dumps(self.incomplete_offer), headers={'content-type':'application/json', 'Authorization':'Bearer {}'.format(self.token)})
         self.assertEqual(self.response.status_code, 400)
-        self.assertEqual(json.loads(self.response.data), validator.validate(dummy_incomplete_offer, 'create_ride'))
+
 
     def test_make_request_to_join_valid_details(self):
         self.dummy_client.post('/api/v1/regester', data= json.dumps(self.test_user), headers={'content-type':'application/json'})

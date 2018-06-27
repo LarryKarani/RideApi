@@ -4,26 +4,19 @@ from .user import User
 
 class RideOffer():
     #holds all ride offers
-    ride_offers = [{
-            'id':1,
-            'name':'na',
-            'from':'Fom',
-            'To':'To',
-            'car_model':'car_model',
-            'cost':'cost',
-            'seats_available':'seats_available',
-            'time': 'time'
-        }]
+    ride_offers = []
 
-    def create_ride(self, name, From, To, car_model, cost, seats_available, time):
+    def __init__(self, name, From, To, car_model, cost, seats_available, time):
+        self.name = name
+        self.From = From
+        self.To = To
+        self.car_model = car_model
+        self.cost = cost
+        self.seats_available =seats_available
+        self.time = time
+
+    def create_ride(self):
         self.id = 1
-        
-        """self.user_info = {
-                        'name': self.user['username'],
-                        'username': self.user['username'],
-                        'since': self.user['date_registered']
-                         }"""
-
         self.date_created = str(datetime.now())
 
         if len(self.ride_offers) != 0:
@@ -31,14 +24,15 @@ class RideOffer():
 
         self.ride_offer_dict = {
             'id':self.id,
-            'name':name,
-            'From':From,
-            'To':To,
-            'car_model':car_model,
-            'cost':cost,
-            'seats_available':seats_available,
-            'time': time,
+            'name':self.name,
+            'From':self.From,
+            'To':self.To,
+            'car_model':self.car_model,
+            'cost':self.cost,
+            'seats_available':self.seats_available,
+            'time': self.time,
             'date_created':self.date_created
+        
         }
 
         self.ride_offers.append(self.ride_offer_dict)

@@ -10,11 +10,6 @@ from .utils import Validator
 from .rideoffers import RideOffer
 from .request import RequestsJ
 
-rideoffer = RideOffer()
-validator = Validator()
-join_req =  RequestsJ()
-
-user_r = User()
 
 parser = reqparse.RequestParser()
 parser.add_argument('username', help = 'username cannot be blank', required=True)
@@ -24,7 +19,7 @@ parser.add_argument('password', help = 'password cannot be blank', required=True
 class Usersg(Resource):
     """Used to confirm that a user has been added by getting all the users in the Db"""
     def get(self):
-        response = jsonify(user_r.get_all_users())
+        response = jsonify(User.get_all_users())
         response.status_code = 200
         return response 
         
@@ -32,7 +27,7 @@ class Login(Resource):
     def post(self):
         
         data = parser.parse_args()
-        current_user = user_r.return_user(data['username'])
+        current_user = User.return_user(data['username'])
 
         if not current_user:
             return {'message':'User {} does\'t exist'.format(data['username'])}
@@ -59,7 +54,7 @@ class Register(Resource):
 
         data = request.get_json(force=True)
         """pass through the validator method to confirm details"""
-        message= validator.validate(data, 'reg')
+        message= Validator(data, 'reg').validate()
 
         if message:
             response=jsonify(message)
@@ -69,17 +64,17 @@ class Register(Resource):
 
         """check if email is already registered"""
 
-        if user_r.return_user(data['email'].strip().lower()):
+        if User.return_user(data['email'].strip().lower()):
             response = jsonify({'message': 'Email already registered'})
             response.status_code =400
             return response
 
-        if user_r.return_user(data['username'].strip()):
+        if User.return_user(data['username'].strip()):
             response = jsonify({'message': 'username already registered'})
             response.status_code =400
             return response
 
-        new_user = user_r.regester_user(data['name'].strip(), data['username'].strip(), data['email'].strip().lower(),generate_password_hash(data['password'].strip()))
+        new_user = User(data['name'].strip(), data['username'].strip(), data['email'].strip().lower(),generate_password_hash(data['password'].strip())).regester_user()
 
         message = {
             'user':{
@@ -110,7 +105,7 @@ class AllRides(Resource):
     def post(self):
         """creates a new ride offer"""
         content = request.get_json(force=True)
-        message = validator.validate(content, 'create_ride')
+        message = Validator(content, 'create_ride').validate()
         
         if message:
             response = jsonify(message)
@@ -118,13 +113,11 @@ class AllRides(Resource):
 
             return response
 
-        new_offer = rideoffer.create_ride(
-
+        new_offer = RideOffer(
             content['name'].strip(),content['From'],
             content['To'],content['car_model'],content['cost'],
             content['seats_available'], content['time']
-
-        )
+             ).create_ride()
         
         message = {
             'ride':{
@@ -147,7 +140,7 @@ class GetRide(Resource):
     def get(self, rideId):
         #retrieves a single ride offer from the list of all rides
         
-        offer =  rideoffer.get_specific_offer(rideId)
+        offer =  RideOffer.get_specific_offer(rideId)
 
         if not offer:
             response = jsonify({"message": "ride offer for id provided doesnt exist"})
@@ -162,7 +155,7 @@ class JoinRequest(Resource):
     @jwt_required
     def post(self, rideId):
         data = request.get_json(force=True)
-        message = validator.validate(data, 'request_ride')
+        message = Validator(data, 'request_ride').validate()
 
         if message:
             response = jsonify(message)
@@ -170,14 +163,14 @@ class JoinRequest(Resource):
 
             return response
 
-        ride_to_request = rideoffer.get_specific_offer(rideId)
+        ride_to_request = RideOffer.get_specific_offer(rideId)
 
         if not ride_to_request:
             response = jsonify({'message': 'ride offer does not exist'})
             response.status_code=400
 
     
-        join_request = join_req.request_ride(data['name'], data['From'], data['To'], data['seats_needed'], data['time'], rideId)
+        join_request = RequestsJ(data['name'], data['From'], data['To'], data['seats_needed'], data['time'], rideId).request_ride()
 
         message = {
             'request':'created succesfully',
