@@ -7,7 +7,13 @@ python:
 install:
   - pip install -r requirements.txt
 
+# blaclklist
+branches:
+  except:
+    - feature
+    - develope
 
+# whitelist
 branches:
   only:
     -f1
