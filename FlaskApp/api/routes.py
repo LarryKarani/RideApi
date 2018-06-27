@@ -3,6 +3,7 @@ from flask_restful import Resource, reqparse
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import request, jsonify
 import json
+import redirect
 
 
 from.user import User
