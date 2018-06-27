@@ -8,7 +8,7 @@ class User:
         self.email = email
         self.password = password
 
-    def regester_user(self):
+    def register_user(self):
         #adds user into the user list and returs the user
         self.date_registered = str(datetime.now())
 

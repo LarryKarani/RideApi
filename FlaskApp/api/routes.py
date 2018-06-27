@@ -74,7 +74,7 @@ class Register(Resource):
             response.status_code =400
             return response
 
-        new_user = User(data['name'].strip(), data['username'].strip(), data['email'].strip().lower(),generate_password_hash(data['password'].strip())).regester_user()
+        new_user = User(data['name'].strip(), data['username'].strip(), data['email'].strip().lower(),generate_password_hash(data['password'].strip())).register_user()
 
         message = {
             'user':{
