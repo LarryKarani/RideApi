@@ -1,17 +1,22 @@
 language: python
-
-
 python:
--"3.6"
+  - "3.6"
+ 
 
 install:
- -pip install -r requirements.txt
- -pip install
+  - pip install -r requirements.txt
 
- script: pytest
+# blaclklist
+branches:
+  except:
+    - feature
+    - develope
 
- after_success: coveralls
-
- branches:
+# whitelist
+branches:
   only:
-  -f1
+    -f1
+    -master
+
+script:
+  - pytest
