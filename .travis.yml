@@ -10,3 +10,10 @@ install:
  script: pytest
 
  after_success: coveralls
+
+ branches:
+  only:
+  - master
+  - f1
+  - develop
+  - feature
