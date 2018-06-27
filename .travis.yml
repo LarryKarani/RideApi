@@ -6,7 +6,7 @@ install:
   - pip install -r requirements.txt
   - pip install flask-restful
   - pip install flask-jwt-extended
-  - pip install coverals
+  - pip install coveralls
   - pip install codeclimate-test-reporter
   - pip install pytest pytest-cov
 
