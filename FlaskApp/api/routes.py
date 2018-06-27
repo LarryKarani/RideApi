@@ -40,11 +40,16 @@ class Login(Resource):
         if check_password_hash(current_user['password'], data['password'].strip()):
             access_token = create_access_token(identity=data['username'])
             refresh_token =create_refresh_token(identity=data['username'])
-            return {
+            response = jsonify({
                 "message":"logged in as {}".format(current_user['username']),
                 "acces_token":access_token,
                 'refresh_token':refresh_token
-                }
+                })
+    
+            response.status_code= 200
+
+            return response
+            
         else:
             return {'message':'Wrong credentials'}
 
@@ -183,3 +188,11 @@ class JoinRequest(Resource):
 
         return response
 
+class TokenRefresh(Resource):
+    @jwt_refresh_token_required
+    def post(self):
+        current_user = get_jwt_identity()
+        access_token = create_access_token(identity =current_user)
+        return {
+            'access_token': access_token
+        }

@@ -1,5 +1,3 @@
-#stores dummy data
-
 
 dummy_ride_offer = {
                     
@@ -17,8 +15,8 @@ dummy_ride_offer_request ={
                            "name":"larry",
                            "From":"Kitale",
                            "To":"Uganda",
-                           "cost":"$20",
-                           "seats":"5",
+                           "time":"5:30",
+                           "seats_needed":"5",
                            }
 
 dummy_incomplete_offer = {
@@ -27,3 +25,23 @@ dummy_incomplete_offer = {
                              "To":"Uganda",
                              "cost":"$20",
                         }
+
+dummy_user = {
+               "name":"yusuf",
+               "username":"tester",
+               "email":"test@gmail.com",
+               "password":"6398kkkkkkk"
+              }
+
+dummy_login = {
+        "username":"tester",
+        "password":"6398kkkkkkk"
+}
+
+
+dummy_incomplete_ride_offer_request ={
+                           "name":"larry",
+                           "From":"Kitale",
+                           "To":"Uganda",
+                           "seats_needed":"5",
+                           }
