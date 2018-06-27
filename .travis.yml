@@ -1,7 +1,8 @@
-language:python
+language: python
+
 
 python:
--"3.6.0"
+-"3.6"
 
 install:
  -pip install -r requirements.txt
@@ -13,7 +14,4 @@ install:
 
  branches:
   only:
-  - master
-  - f1
-  - develop
-  - feature
+  -f1
