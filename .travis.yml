@@ -12,7 +12,7 @@ install:
 
 before_script:
   - set config=development
-  - export SECRET_KEY=@#$%^&*()
+  - set SECRET_KEY=@#$%^&*()
 
 script: pytest --cov=./
 
