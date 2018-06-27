@@ -15,7 +15,9 @@ parser = reqparse.RequestParser()
 parser.add_argument('username', help = 'username cannot be blank', required=True)
 parser.add_argument('password', help = 'password cannot be blank', required=True)
 
-
+class Home(Resource):
+    def get(self):
+        return redirect("https://ridemyway6.docs.apiary.io/", code=302)
 class Usersg(Resource):
     """Used to confirm that a user has been added by getting all the users in the Db"""
     def get(self):
