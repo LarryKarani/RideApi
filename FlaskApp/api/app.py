@@ -9,7 +9,6 @@ from .routes import Home, AllRides, GetRide,  JoinRequest, Register, Login, User
 def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
-    jwt = JWTManager(app)
     api = Api(app)
     
     api.add_resource(Home, '/')
