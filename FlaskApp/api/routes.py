@@ -1,8 +1,9 @@
 from flask_jwt_extended import(create_access_token, create_refresh_token, jwt_required,jwt_refresh_token_required,get_jwt_identity,get_raw_jwt)
 from flask_restful import Resource, reqparse
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import request, jsonify
+from flask import request, jsonify, redirect
 import json
+
 
 
 from.user import User
@@ -15,7 +16,9 @@ parser = reqparse.RequestParser()
 parser.add_argument('username', help = 'username cannot be blank', required=True)
 parser.add_argument('password', help = 'password cannot be blank', required=True)
 
-
+class Home(Resource):
+    def get(self):
+        return redirect("https://ridemyway6.docs.apiary.io/", code=302)
 class Usersg(Resource):
     """Used to confirm that a user has been added by getting all the users in the Db"""
     def get(self):

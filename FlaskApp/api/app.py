@@ -3,7 +3,7 @@ from flask_restful import Resource, Api
 from flask_jwt_extended import JWTManager
 
 from ..config import config
-from .routes import AllRides, GetRide,  JoinRequest, Register, Login, Usersg
+from .routes import Home, AllRides, GetRide,  JoinRequest, Register, Login, Usersg
 
 
 def create_app(config_name):
@@ -12,6 +12,7 @@ def create_app(config_name):
     jwt = JWTManager(app)
     api = Api(app)
     
+    api.add_resource(Home, '/')
     api.add_resource(Register, '/api/v1/regester')
     api.add_resource(Login, '/api/v1/login')
     api.add_resource(AllRides, '/api/v1/rides')
