@@ -1,50 +1,52 @@
-from flask_jwt_extended import(create_access_token, create_refresh_token, jwt_required,jwt_refresh_token_required,get_jwt_identity,get_raw_jwt)
+from flask_jwt_extended import(create_access_token, create_refresh_token, jwt_required,jwt_refresh_token_required,get_jwt_identity)
 from flask_restful import Resource, reqparse
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import request, jsonify
+from flask import request, jsonify, redirect
 import json
 
 
-from.user import User
+
 from .utils import Validator
 from .rideoffers import RideOffer
 from .request import RequestsJ
+from .db import return_user
+from .db_config import con
 
-rideoffer = RideOffer()
-validator = Validator()
-join_req =  RequestsJ()
-
-user_r = User()
-
+cursor = con.cursor()
 parser = reqparse.RequestParser()
 parser.add_argument('username', help = 'username cannot be blank', required=True)
 parser.add_argument('password', help = 'password cannot be blank', required=True)
 
-
-class Usersg(Resource):
-    """Used to confirm that a user has been added by getting all the users in the Db"""
+class Home(Resource):
     def get(self):
-        response = jsonify(user_r.get_all_users())
-        response.status_code = 200
-        return response 
+        return redirect("https://ridemyway6.docs.apiary.io/", code=302)
         
 class Login(Resource):
-    def post(self):
+    def post(self):                              
         
         data = parser.parse_args()
-        current_user = user_r.return_user(data['username'])
+        get_user_query = 'SELECT username, password FROM users WHERE "username"=\'{}\''.format(data['username'])
+        
+        current_user = return_user(con, get_user_query)
+
+        print(current_user)
 
         if not current_user:
             return {'message':'User {} does\'t exist'.format(data['username'])}
 
-        if check_password_hash(current_user['password'], data['password'].strip()):
+        if check_password_hash(current_user[0][1], data['password'].strip()):
             access_token = create_access_token(identity=data['username'])
             refresh_token =create_refresh_token(identity=data['username'])
-            return {
-                "message":"logged in as {}".format(current_user['username']),
+            response = jsonify({
+                "message":"logged in as {}".format(current_user[0][0]),
                 "acces_token":access_token,
                 'refresh_token':refresh_token
-                }
+                })
+    
+            response.status_code= 200
+
+            return response
+            
         else:
             return {'message':'Wrong credentials'}
 
@@ -54,7 +56,7 @@ class Register(Resource):
 
         data = request.get_json(force=True)
         """pass through the validator method to confirm details"""
-        message= validator.validate(data, 'reg')
+        message= Validator(data, 'reg').validate()
 
         if message:
             response=jsonify(message)
@@ -64,26 +66,31 @@ class Register(Resource):
 
         """check if email is already registered"""
 
-        if user_r.return_user(data['email'].strip().lower()):
-            response = jsonify({'message': 'Email already registered'})
-            response.status_code =400
-            return response
+        check_query = "SELECT FROM user WHERE 'email' ='{}'and 'username'='{}'".format(data['email'], data['username'])
+        
 
-        if user_r.return_user(data['username'].strip()):
+        
+        user_exist =  return_user(con, check_query)
+
+        
+
+        if user_exist :
             response = jsonify({'message': 'username already registered'})
             response.status_code =400
             return response
 
-        new_user = user_r.regester_user(data['name'].strip(), data['username'].strip(), data['email'].strip().lower(),generate_password_hash(data['password'].strip()))
+        new_user_query = 'INSERT INTO users (username, email, password)\
+         VALUES(\'%s\',\'%s\',\'%s\');' %(data['username'].strip(),data['email'].strip().lower(),\
+         generate_password_hash(data['password'].strip()))
+
+        cursor.execute(new_user_query)
+
+
+         
 
         message = {
-            'user':{
-                'name': new_user['name'],
-                'username':new_user['username'],
-                'email': new_user['email']
-            },
 
-            'message': "User created successfully"
+            "message": "User created successfully"
         }
 
         response = jsonify(message)
@@ -105,7 +112,7 @@ class AllRides(Resource):
     def post(self):
         """creates a new ride offer"""
         content = request.get_json(force=True)
-        message = validator.validate(content, 'create_ride')
+        message = Validator(content, 'create_ride').validate()
         
         if message:
             response = jsonify(message)
@@ -113,13 +120,11 @@ class AllRides(Resource):
 
             return response
 
-        new_offer = rideoffer.create_ride(
-
+        new_offer = RideOffer(
             content['name'].strip(),content['From'],
             content['To'],content['car_model'],content['cost'],
             content['seats_available'], content['time']
-
-        )
+             ).create_ride()
         
         message = {
             'ride':{
@@ -142,7 +147,7 @@ class GetRide(Resource):
     def get(self, rideId):
         #retrieves a single ride offer from the list of all rides
         
-        offer =  rideoffer.get_specific_offer(rideId)
+        offer =  RideOffer.get_specific_offer(rideId)
 
         if not offer:
             response = jsonify({"message": "ride offer for id provided doesnt exist"})
@@ -157,7 +162,7 @@ class JoinRequest(Resource):
     @jwt_required
     def post(self, rideId):
         data = request.get_json(force=True)
-        message = validator.validate(data, 'request_ride')
+        message = Validator(data, 'request_ride').validate()
 
         if message:
             response = jsonify(message)
@@ -165,14 +170,14 @@ class JoinRequest(Resource):
 
             return response
 
-        ride_to_request = rideoffer.get_specific_offer(rideId)
+        ride_to_request = RideOffer.get_specific_offer(rideId)
 
         if not ride_to_request:
             response = jsonify({'message': 'ride offer does not exist'})
             response.status_code=400
 
     
-        join_request = join_req.request_ride(data['name'], data['From'], data['To'], data['seats_needed'], data['time'], rideId)
+        join_request = RequestsJ(data['name'], data['From'], data['To'], data['seats_needed'], data['time'], rideId).request_ride()
 
         message = {
             'request':'created succesfully',
@@ -183,3 +188,11 @@ class JoinRequest(Resource):
 
         return response
 
+class TokenRefresh(Resource):
+    @jwt_refresh_token_required
+    def post(self):
+        current_user = get_jwt_identity()
+        access_token = create_access_token(identity =current_user)
+        return {
+            'access_token': access_token
+        }
