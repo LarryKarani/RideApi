@@ -2,6 +2,18 @@ import psycopg2 as pdb
 import psycopg2.extras
 import sys
 
+try:
+    con = pdb.connect(database='ridemyway', user='postgres',\
+                      password='6398litein', host="127.0.0.1", port="5432")
+    con.autocommit=True
+    cur = con.cursor()
+    cur.execute('SELECT version()')
+    var = cur.fetchone()
+
+    print (var)
+except Exception:
+    print('not connected')
+
 #CREATE A NEW TABLE
 
 def create_table(con, query):
@@ -23,7 +35,8 @@ def insertTable(con, query):
 def return_user(con, query):
     with con:
         cur = con.cursor()
-        results = cur.execute(query)
+        cur.execute(query)
+        results = cur.fetchall()
 
         return results
 

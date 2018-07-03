@@ -20,27 +20,25 @@ parser.add_argument('password', help = 'password cannot be blank', required=True
 class Home(Resource):
     def get(self):
         return redirect("https://ridemyway6.docs.apiary.io/", code=302)
-class Usersg(Resource):
-    """Used to confirm that a user has been added by getting all the users in the Db"""
-    def get(self):
-        response = jsonify(User.get_all_users())
-        response.status_code = 200
-        return response 
         
 class Login(Resource):
-    def post(self):
+    def post(self):                              
         
         data = parser.parse_args()
-        current_user = User.return_user(data['username'])
+        get_user_query = 'SELECT username, password FROM users WHERE "username"=\'{}\''.format(data['username'])
+        
+        current_user = return_user(con, get_user_query)
+
+        print(current_user)
 
         if not current_user:
             return {'message':'User {} does\'t exist'.format(data['username'])}
 
-        if check_password_hash(current_user['password'], data['password'].strip()):
+        if check_password_hash(current_user[0][1], data['password'].strip()):
             access_token = create_access_token(identity=data['username'])
             refresh_token =create_refresh_token(identity=data['username'])
             response = jsonify({
-                "message":"logged in as {}".format(current_user['username']),
+                "message":"logged in as {}".format(current_user[0][0]),
                 "acces_token":access_token,
                 'refresh_token':refresh_token
                 })
@@ -81,8 +79,8 @@ class Register(Resource):
             response.status_code =400
             return response
 
-        new_user_query = 'INSERT INTO "user" (username, email, password)\
-         VALUES(\'%s\',\'%s\',\'%s\')' %(data['username'].strip(),data['email'].strip().lower(),\
+        new_user_query = 'INSERT INTO users (username, email, password)\
+         VALUES(\'%s\',\'%s\',\'%s\');' %(data['username'].strip(),data['email'].strip().lower(),\
          generate_password_hash(data['password'].strip()))
 
         cursor.execute(new_user_query)
