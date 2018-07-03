@@ -6,12 +6,13 @@ import json
 
 
 
-from.user import User
 from .utils import Validator
 from .rideoffers import RideOffer
 from .request import RequestsJ
+from .db import return_user
+from .db_config import con
 
-
+cursor = con.cursor()
 parser = reqparse.RequestParser()
 parser.add_argument('username', help = 'username cannot be blank', required=True)
 parser.add_argument('password', help = 'password cannot be blank', required=True)
@@ -67,26 +68,31 @@ class Register(Resource):
 
         """check if email is already registered"""
 
-        if User.return_user(data['email'].strip().lower()):
-            response = jsonify({'message': 'Email already registered'})
-            response.status_code =400
-            return response
+        check_query = "SELECT FROM user WHERE 'email' ='{}'and 'username'='{}'".format(data['email'], data['username'])
+        
 
-        if User.return_user(data['username'].strip()):
+        
+        user_exist =  return_user(con, check_query)
+
+        
+
+        if user_exist :
             response = jsonify({'message': 'username already registered'})
             response.status_code =400
             return response
 
-        new_user = User(data['name'].strip(), data['username'].strip(), data['email'].strip().lower(),generate_password_hash(data['password'].strip())).register_user()
+        new_user_query = 'INSERT INTO "user" (username, email, password)\
+         VALUES(\'%s\',\'%s\',\'%s\')' %(data['username'].strip(),data['email'].strip().lower(),\
+         generate_password_hash(data['password'].strip()))
+
+        cursor.execute(new_user_query)
+
+
+         
 
         message = {
-            'user':{
-                'name': new_user['name'],
-                'username':new_user['username'],
-                'email': new_user['email']
-            },
 
-            'message': "User created successfully"
+            "message": "User created successfully"
         }
 
         response = jsonify(message)

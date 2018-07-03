@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from .rideoffers import RideOffer
-from.user import User
+
 
 
 

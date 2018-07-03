@@ -1,5 +1,5 @@
 from datetime import datetime
-from .user import User
+
 
 
 class RideOffer():
