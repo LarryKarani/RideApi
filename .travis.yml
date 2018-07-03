@@ -1,0 +1,20 @@
+language: python
+planguage: python
+python:
+  - "3.6"
+install: 
+  - pip install -r requirements.txt
+  - pip install flask-restful
+  - pip install flask-jwt-extended
+  - pip install coveralls
+  - pip install codeclimate-test-reporter
+  - pip install pytest pytest-cov
+
+before_script:
+  - set config=development
+
+script: pytest --cov=./
+
+after_success:
+  -coveralls
+  -codeclimate-test-reporter

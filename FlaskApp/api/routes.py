@@ -29,7 +29,6 @@ class Login(Resource):
         
         current_user = return_user(con, get_user_query)
 
-        print(current_user)
 
         if not current_user:
             return {'message':'User {} does\'t exist'.format(data['username'])}
@@ -66,15 +65,13 @@ class Register(Resource):
 
         """check if email is already registered"""
 
-        check_query = "SELECT FROM user WHERE 'email' ='{}'and 'username'='{}'".format(data['email'], data['username'])
-        
-
-        
+        check_query = 'SELECT FROM users WHERE "email" =\'{}\'and "username"=\'{}\''.format(data['email'], data['username'])
+    
         user_exist =  return_user(con, check_query)
-
+      
         
 
-        if user_exist :
+        if user_exist:
             response = jsonify({'message': 'username already registered'})
             response.status_code =400
             return response
