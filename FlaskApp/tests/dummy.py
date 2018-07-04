@@ -1,28 +1,27 @@
 
 dummy_ride_offer = {
                     
-        "From": "ooo",
-        "To": "oo",
-        "car_model": "odel",
-        "cost": "coot",
-        "name": "name_lt",
-        "seats_available": "seats_ppilable",
-        "time": "timelll"
+        "current_location": "nairobi",
+        "destination": "nakuru",
+        "seats_available": "5",
+        "depature_time": "12:30",
+        "cost": "45",
+        
 
                     }
 
 dummy_ride_offer_request ={
-                           "name":"larry",
-                           "From":"Kitale",
-                           "To":"Uganda",
-                           "time":"5:30",
-                           "seats_needed":"5",
+                           "username,":"larry",
+                           "current_location":"Kitale",
+                           "destiation":"Uganda",
+                           "deperture_time":"5:30",
+                           
                            }
 
 dummy_incomplete_offer = {
-                           "name":"larry",
-                            "From":"Kitale",
-                             "To":"Uganda",
+                
+                            "current_location":"Kitale",
+                             "destination":"Uganda",
                              "cost":"$20",
                         }
 
@@ -40,8 +39,8 @@ dummy_login = {
 
 
 dummy_incomplete_ride_offer_request ={
-                           "name":"larry",
-                           "From":"Kitale",
-                           "To":"Uganda",
-                           "seats_needed":"5",
+                           "Username":"larry",
+                           "current_location":"Kitale",
+                           "Destinatio":"Uganda",
+                           
                            }

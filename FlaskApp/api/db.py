@@ -47,21 +47,23 @@ def retrieveTable(con, query):
         rows = cur.fetchall()
         return rows
 
-def updateRow(con, query, id):
-    with con:
-        try:
-            cur = con.cursor()
-            cur = con.cursor(cursor_factory=pdb.extras.DictCursor)
-            cur.execute(query)
+def drop_all(con):
+    query1= 'DROP TABLE request CASCADE'
+    cur.execute(query1)
+    con.commit()
 
-        except TypeError as e:
-            return 'Id does not exist'
-def deleteRow(con, query, id):
-    with con:
-            try:
-               cur = con.cursor()
-               cur = con.cursor(cursor_factory=pdb.extras.DictCursor)
-               cur.execute(query)
+    query2= 'DROP TABLE rides CASCADE'
+    cur.execute(query2)
+    con.commit()
 
-            except TypeError as e:
-                return 'Id does not exist'
+    query3= 'DROP TABLE users CASCADE'
+    cur.execute(query3)
+    con.commit()
+
+    query4= 'DROP TABLE response CASCADE'
+    cur.execute(query4)
+    con.commit()
+
+
+
+
