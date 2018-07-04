@@ -1,0 +1,8 @@
+[report]   
+omit = */python?.?/*
+*/site packages/*
+*/tests/*    
+*__init__*        
+*manage.?*
+
+show_missing = True
