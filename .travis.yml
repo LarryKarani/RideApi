@@ -18,3 +18,4 @@ script: pytest --cov=./
 after_success:
   -coveralls
   -codeclimate-test-reporter
+  
