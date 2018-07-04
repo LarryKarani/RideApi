@@ -22,10 +22,7 @@ class RegisterTestCase(unittest.TestCase):
        self.test_login = dummy_login
        self.incomplete_request =dummy_incomplete_ride_offer_request
  
- #runs after every test
-    """def tearDown(self):
-        drop_all(con)"""
-    
+ 
         
 
     def test_get_all_ride_offers_with_correct_token(self):
