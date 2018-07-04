@@ -21,8 +21,6 @@ def create_table(con, query):
         cur = con.cursor()
         cur.execute(query)
         con.commit()
-
-
 # INSERT VALUES
 
 def insertTable(con, query):
@@ -63,7 +61,3 @@ def drop_all(con):
     query4= 'DROP TABLE response CASCADE'
     cur.execute(query4)
     con.commit()
-
-
-
-

@@ -7,8 +7,7 @@ from .routes import Home, AllRides, GetRide,  JoinRequest, Register, Login, Ride
 from .db_config import con
 from .db import create_table
 
-
-
+"""App Factory"""
 def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
@@ -39,8 +38,6 @@ def create_app(config_name):
     create_table(con, request_queries)
     create_table(con, ride_offer_response_queries)
 
-
-    
     api.add_resource(Home, '/')
     api.add_resource(Register, '/api/v1/auth/signup')
     api.add_resource(Login, '/api/v1/auth/login')
@@ -48,9 +45,5 @@ def create_app(config_name):
     api.add_resource(GetRide, '/api/v1/rides/<rideId>')
     api.add_resource( JoinRequest, '/api/v1/rides/<rideId>/requests')
     api.add_resource(RideOfferResponse,  '/api/v1/users/rides/<rideId>/requests/<requestId>')
-    
-    
+
     return app
-  
-
-
