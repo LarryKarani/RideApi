@@ -65,7 +65,7 @@ class Register(Resource):
 
         """check if email is already registered"""
 
-        check_query = 'SELECT FROM users WHERE "email" =\'{}\'and "username"=\'{}\''.format(
+        check_query = 'SELECT * FROM users WHERE "email" =\'{}\'and "username"=\'{}\''.format(
             data['email'], data['username'])
 
         user_exist = return_user(con, check_query)
