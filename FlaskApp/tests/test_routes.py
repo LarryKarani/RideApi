@@ -23,8 +23,7 @@ class RidesTestCase(unittest.TestCase):
        self.test_login = dummy_login
        self.incomplete_request =dummy_incomplete_ride_offer_request
  
-    def tearDown(self):
-        drop_all(con)
+    
           
     def test_get_all_ride_offers_with_correct_token(self):
         self.dummy_client.post('/api/v1/auth/signup', data=json.dumps(self.test_user), content_type = 'application/json')
@@ -101,8 +100,6 @@ class RequestTestCase(unittest.TestCase):
        self.test_login = dummy_login
        self.incomplete_request =dummy_incomplete_ride_offer_request
 
-    def tearDown(self): 
-        drop_all(con)
 
     def test_request_to_join_no_token(self):
         self.dummy_client.post('/api/v1/auth/signup', data= json.dumps(self.test_user), headers={'content-type':'application/json'})
@@ -130,9 +127,7 @@ class RegesterTestcase(unittest.TestCase):
         self.empty_name =dummy_user_no_username
         self.special_chars_user = user_special_chars
         self.wrong_email= wrong_email
-    def tearDown(self): 
-        drop_all(con)
-
+   
 
     def test_register_user_empty_username(self):
         self.response = self.dummy_client.post('/api/v1/auth/signup', data=json.dumps(self.empty_name), headers={'content-type':'application/json'})
