@@ -25,17 +25,33 @@ dummy_incomplete_offer = {
                              "cost":"$20",
                         }
 
+
 dummy_user = {
-               "name":"yusuf",
+        
                "username":"tester",
                "email":"test@gmail.com",
                "password":"6398kkkkkkk"
               }
+user_special_chars = {
+        
+               "username":"@#$%",
+               "email":"test@gmail.com",
+               "password":"6398kkkkkkk"
+              }
+
+new_user= {
+        
+               "username":"tonny",
+               "email":"test@gmail.com",
+               "password":"6398kkkkkkk"
+              }
+
 
 dummy_login = {
         "username":"tester",
         "password":"6398kkkkkkk"
 }
+
 
 
 dummy_incomplete_ride_offer_request ={
@@ -44,3 +60,32 @@ dummy_incomplete_ride_offer_request ={
                            "Destinatio":"Uganda",
                            
                            }
+dummy_user_no_username= {
+
+        
+               "password":"6398kkkkkkk"
+              }
+
+wrong_email= {
+               "username":"tonny",
+               "email":"testgmailcom",
+               "password":"6398kkkkkkk"
+              }
+
+dummy_wrong_login = {
+                      "username":"topppy",
+                     "password":"6398kkkkkkk"
+                     
+                    }
+
+test_user = {
+        
+               "username":"tyer",
+               "email":"test@gmail.com",
+               "password":"6398kkkkkkk"
+              }
+
+dummy_login_test = {
+        "username":"tyer",
+        "password":"6398kkkkkkk"
+}
