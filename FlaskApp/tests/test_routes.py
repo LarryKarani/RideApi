@@ -2,8 +2,8 @@ import py
 import unittest
 import json
 
-from FlaskApp.api.app import create_app
-from FlaskApp.api.db  import drop_all, con
+from FlaskApp.api.app import create_app, con
+from FlaskApp.api.db  import drop_all
 
 from FlaskApp.api.utils import Validator
 from .dummy import ( dummy_ride_offer_request,  dummy_ride_offer, dummy_incomplete_offer,
