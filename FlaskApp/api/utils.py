@@ -12,50 +12,31 @@ class Validator():
         self.obj = obj
 
     def validate(self):
+        
         if self.activity == 'create_ride':
             for prop in self.ride_ofer_props:
-                if prop not in self.obj:
+                if prop not in self.obj or  self.obj[prop].strip() == "":
                     return {"message": f"please provide {prop}"}
-
-                if self.obj[prop].strip() == "":
-                    return {'message': f"empty{prop} not allowed"}
-
-
 
         if self.activity == 'request_ride':
             for prop in self.ride_request_props:
-                if prop not in self.obj:
+                if prop not in self.obj or self.obj[prop].strip() == "":
                     return {"message": f"please provide {prop}"}
-
-                if self.obj[prop].strip() == "":
-                    return {'message': f"empty{prop} not allowed"}
 
         if self.activity == 'reply':
             for prop in self.reply_props:
-                if prop not in self.obj:
+                if prop not in self.obj or  self.obj[prop].strip():
                     return {"message": f"please provide {prop}"}
-
-                if self.obj[prop].strip() == "":
-                    return {'message': f"empty{prop} not allowed"}
-
-
-                
 
         if self.activity  == 'reg':
             for prop in self.register_props:
-                if prop not in self.obj:
+                if prop not in self.obj or  self.obj[prop].strip()=="":
                     return {"message": f"please provide {prop}"}
-            for prop in self.register_props:
-                if self.obj[prop].strip()=="":
-                    return {'message': f"empty{prop} not allowed"}
-
             
                 
-                if '@' not in str(self.obj['email']):
+                if '@' not in str(self.obj['email']) or '.' not in str(self.obj['email']):
                     return {"message":"Email is invalid"}
 
-                if '.' not in str(self.obj['email']):
-                    return {"message":"Email is invalid"}
 
                 if len(str(self.obj['password'])) < 8:
                     return {"message":"password cannot be less than 8 characters"}
@@ -66,5 +47,8 @@ class Validator():
 
                 if len(str(self.obj['username'])) > 10:
                     return {'message': "username should not be greater than 10 characters"}
+
+                if self.has_numbers.search(self.obj['username']) or self.has_special.search(self.obj['username']):
+                    return {'message': "invalid username"}
 
             
