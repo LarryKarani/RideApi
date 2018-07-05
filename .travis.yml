@@ -14,7 +14,6 @@ services:
   - postgresql
 before_script:
   - set config=development
-  - psql -c "CREATE ROLE postgres WITH SUPERUSER LOGIN PASSWORD '6398litein';" -U postgres
   - psql -c "CREATE DATABASE tester;" -U postgres
 
 script: pytest --cov=./
