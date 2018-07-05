@@ -3,25 +3,23 @@ import psycopg2.extras
 import sys
 
 try:
-    con = pdb.connect(database='ridemyway', user='postgres',\
+    con = pdb.connect(database='ridemyway', user='postgres',
                       password='6398litein', host="127.0.0.1", port="5432")
-    con.autocommit=True
+    con.autocommit = True
     cur = con.cursor()
     cur.execute('SELECT version()')
     var = cur.fetchone()
 
-    print (var)
+    print(var)
 except Exception:
     print('not connected')
 
-#CREATE A NEW TABLE
-
-def create_table(con, query):
+def create_table (con, query):
+     
     with con:
         cur = con.cursor()
         cur.execute(query)
         con.commit()
-# INSERT VALUES
 
 def insertTable(con, query):
     with con:
@@ -29,6 +27,7 @@ def insertTable(con, query):
 
         cur.execute(query)
         con.commit()
+
 
 def return_user(con, query):
     with con:
@@ -38,6 +37,7 @@ def return_user(con, query):
 
         return results
 
+
 def retrieveTable(con, query):
     with con:
         cur = con.cursor(cursor_factory=pdb.extras.DictCursor)
@@ -45,19 +45,15 @@ def retrieveTable(con, query):
         rows = cur.fetchall()
         return rows
 
+
 def drop_all(con):
-    query1= 'DROP TABLE request CASCADE'
+
+    query1 = 'DROP TABLE IF EXISTS request CASCADE;'
     cur.execute(query1)
-    con.commit()
-
-    query2= 'DROP TABLE rides CASCADE'
+    query2 = 'DROP TABLE IF EXISTS rides CASCADE;'
     cur.execute(query2)
-    con.commit()
-
-    query3= 'DROP TABLE users CASCADE'
+    query3 = ' DROP TABLE IF EXISTS usersCASCADE;'
     cur.execute(query3)
-    con.commit()
-
-    query4= 'DROP TABLE response CASCADE'
+    query4 = 'DROP TABLE IF EXISTS response CASCADE;'
     cur.execute(query4)
-    con.commit()
+    
