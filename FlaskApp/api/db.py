@@ -1,18 +1,9 @@
 import psycopg2 as pdb
 import psycopg2.extras
+from .db_config import con
 import sys
 
-try:
-    con = pdb.connect(database='ridemyway', user='postgres',
-                      password='6398litein', host="127.0.0.1", port="5432")
-    con.autocommit = True
-    cur = con.cursor()
-    cur.execute('SELECT version()')
-    var = cur.fetchone()
 
-    print(var)
-except Exception:
-    print('not connected')
 
 def create_table (con, query):
      
