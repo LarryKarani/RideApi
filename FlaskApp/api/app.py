@@ -17,7 +17,7 @@ def create_app(config_name):
     #create table queries
     create_table()
 
-    api.add_resource(Home, '/')
+
     api.add_resource(Register, '/api/v1/auth/signup')
     api.add_resource(Login, '/api/v1/auth/login')
     api.add_resource(AllRides, '/api/v1/rides')
