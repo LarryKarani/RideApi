@@ -57,7 +57,7 @@ def retrieveTable(con, query):
         return rows
 
 
-def drop_all(con):
+def drop_all():
     cur=con.cursor()
     query1 = 'DROP TABLE IF EXISTS request CASCADE;'
     cur.execute(query1)

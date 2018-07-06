@@ -96,9 +96,9 @@ class AllRides(Resource):
 
     @jwt_required
     def get(self):
-        get_rides_query = 'SELECT current_location, depature_time FROM rides '
+        get_rides_query = 'SELECT array_to_json(array_agg(rides)) FROM rides '
         all_rides = return_user(con, get_rides_query)
-
+    
         return all_rides
 
     @jwt_required
@@ -145,16 +145,17 @@ class GetRide(Resource):
     def get(self, rideId):
         # retrieves a single ride offer from the list of all rides
 
-        get_ride_query = 'SELECT current_location, depature_time FROM rides WHERE "id"=\'{}\''.format(
+        get_ride_query = 'SELECT array_to_json(array_agg(rides)) FROM rides WHERE "id"=\'{}\''.format(
             rideId)
         ride = return_user(con, get_ride_query)
-
-        if not ride:
+       
+        if ride[0][0] is None:
+            
             response = jsonify(
                 {"message": "ride offer for id provided doesnt exist"})
             response.status_code = 400
             return response
-
+       
         response = jsonify(ride)
         response.status_code = 200
         return response

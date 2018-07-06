@@ -38,3 +38,4 @@ class RequestTestCase(unittest.TestCase):
         self.response = self.dummy_client.post('/api/v1/rides/1/requests', data=json.dumps(self.incomplete_request), headers={'content-type':'application/json', 'Authorization':'Bearer {}'.format(self.token)})
         self.assertEqual(self.response.status_code, 400)
         self.assertEqual(json.loads(self.response.get_data()), {'message':'please provide destination'})
+    
