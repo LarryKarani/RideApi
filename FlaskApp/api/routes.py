@@ -15,11 +15,6 @@ parser.add_argument('username', help='username cannot be blank', required=True)
 parser.add_argument('password', help='password cannot be blank', required=True)
 
 
-class Home(Resource):
-    def get(self):
-        return redirect("https://ridemyway6.docs.apiary.io/", code=302)
-
-
 class Login(Resource):
     def post(self):
 
