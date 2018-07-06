@@ -15,28 +15,7 @@ def create_app(config_name):
     api = Api(app)
 
     #create table queries
-    user_table_queries=  'CREATE TABLE IF NOT EXISTS users (Id SERIAL PRIMARY KEY, username VARCHAR(255),\
-                      password VARCHAR(255), email VARCHAR(255));'
-
-    ride_offer_queries= 'CREATE TABLE IF NOT EXISTS rides(Id SERIAL PRIMARY KEY, current_location VARCHAR(255),\
-                     destination VARCHAR(255), depature_time VARCHAR(255), seats_available VARCHAR(255),\
-                     user_id SERIAL, FOREIGN KEY (user_id) REFERENCES users(Id), cost INTEGER);'
-
-    request_queries =   'CREATE TABLE IF NOT EXISTS request(Id SERIAL PRIMARY KEY, Username VARCHAR(255),\
-                      current_location VARCHAR(255), destination VARCHAR(255) , depature_time VARCHAR(255),\
-                      request_id SERIAL, FOREIGN KEY(request_id) REFERENCES rides (Id));'
-
-    ride_offer_response_queries = 'CREATE TABLE IF NOT EXISTS response(Id SERIAL PRIMARY KEY,\
-                      request_id SERIAL, rideoffer_id SERIAL, user_id SERIAL, reply VARCHAR(255),\
-                       FOREIGN KEY(rideoffer_id) REFERENCES rides (Id),\
-                        FOREIGN KEY(request_id) REFERENCES request (Id),\
-                        FOREIGN KEY(user_id) REFERENCES users(Id));'
-
-
-    create_table(con, user_table_queries)
-    create_table(con, ride_offer_queries)
-    create_table(con, request_queries)
-    create_table(con, ride_offer_response_queries)
+    create_table()
 
     api.add_resource(Home, '/')
     api.add_resource(Register, '/api/v1/auth/signup')

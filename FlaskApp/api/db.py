@@ -5,12 +5,32 @@ import sys
 
 
 
-def create_table (con, query):
+def create_table():
      
-    with con:
-        cur = con.cursor()
-        cur.execute(query)
-        con.commit()
+        with con:
+            query1='CREATE TABLE IF NOT EXISTS users (Id SERIAL PRIMARY KEY, username VARCHAR(255),\
+                        password VARCHAR(255), email VARCHAR(255));'
+
+            query2='CREATE TABLE IF NOT EXISTS rides(Id SERIAL PRIMARY KEY, current_location VARCHAR(255),\
+                     destination VARCHAR(255), depature_time VARCHAR(255), seats_available VARCHAR(255),\
+                     user_id SERIAL, FOREIGN KEY (user_id) REFERENCES users(Id), cost INTEGER);'
+
+            query3= 'CREATE TABLE IF NOT EXISTS request(Id SERIAL PRIMARY KEY, Username VARCHAR(255),\
+                      current_location VARCHAR(255), destination VARCHAR(255) , depature_time VARCHAR(255),\
+                      request_id SERIAL, FOREIGN KEY(request_id) REFERENCES rides (Id));'
+
+            query4='CREATE TABLE IF NOT EXISTS response(Id SERIAL PRIMARY KEY,\
+                request_id SERIAL, rideoffer_id SERIAL, user_id SERIAL, reply VARCHAR(255),\
+                FOREIGN KEY(rideoffer_id) REFERENCES rides (Id),\
+                        FOREIGN KEY(request_id) REFERENCES request (Id),\
+                        FOREIGN KEY(user_id) REFERENCES users(Id));'
+
+            cur = con.cursor()
+            cur.execute(query1)
+            cur.execute(query2)
+            cur.execute(query3)
+            cur.execute(query4)
+            con.commit()
 
 def insertTable(con, query):
     with con:
