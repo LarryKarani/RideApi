@@ -3,7 +3,7 @@ from flask_restful import Resource, Api
 from flask_jwt_extended import JWTManager
 
 from ..config import config
-from .routes import Home, AllRides, GetRide,  JoinRequest, Register, Login, RideOfferResponse
+from .routes import AllRides, GetRide,  JoinRequest, Register, Login, RideOfferResponse
 from .db_config import con
 from .db import create_table
 
